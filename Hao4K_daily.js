@@ -47,7 +47,7 @@ axios_Hao4K.get('/', {})
                                     .then(function (response) {
                                         if (response.status == 200) {
                                             let regex = /您的签到排名/;
-                                            let m = regex.exec(response.data);
+                                            let m = regex.exec(iconv.decode(response.data, 'gbk'));
                                             if (m) {
                                                 console.log('签到成功');
                                             }
