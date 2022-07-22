@@ -12,7 +12,7 @@ console.log("\nHao4K_sign\nVersion 1.0.0\n")
 
 // 创建axios实例
 const axios_Hao4K = axios.create({
-    baseURL: 'https://www.hao4k.cn/',
+    baseURL: 'https://www.4ksj.com/',
     timeout: 0,
     headers: {
         "Cookie": Cookie,
