@@ -23,57 +23,65 @@ const axios_Hao4K = axios.create({
 });
 
 // 判断是否登录 
-axios_Hao4K.get('/', {})
-    .then(function (response) {
-        if (response.status == 200) {
-            let regex = />登录网站</;
-            let m = regex.exec(iconv.decode(response.data, 'gbk'));
-            if (m) {
-                console.log('未登录');
-            } else {
-                // 判断是否已签到
-                axios_Hao4K.get('/qiandao', {})
-                    .then(function (response) {
-                        if (response.status == 200) {
-                            let regex = /您的签到排名/;
-                            let m = regex.exec(iconv.decode(response.data, 'gbk'));
-                            if (m) {
-                                console.log('今日已签到');
-                            } else {
-                                regex = /id="JD_sign" href=\"(.*?)\" onclick=/gm;
-                                m = regex.exec(iconv.decode(response.data, 'gbk'));
-                                // 签到
-                                axios_Hao4K.get(m[1], {})
-                                    .then(function (response) {
-                                        if (response.status == 200) {
-                                            let regex = /您的签到排名/;
-                                            let m = regex.exec(iconv.decode(response.data, 'gbk'));
-                                            if (m) {
-                                                console.log('签到成功');
-                                            }
-                                        } else {
-                                            console.log('未知错误');
-                                            console.log(response.data);
-                                        }
-                                    })
-                                    .catch(function (error) {
-                                        console.log(error);
-                                    });
-                            }
-                        } else {
-                            console.log('未知错误');
-                            console.log(response.data);
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            }
+axios_Hao4K.get('/', {}).then(function(response) {
+    if (response.status == 200) {
+        let regex = />登录网站</;
+        let m = regex.exec(iconv.decode(response.data, 'gbk'));
+        if (m) {
+            console.log('未登录');
         } else {
-            console.log('未知错误');
-            console.log(response.data);
+            // 判断是否已签到
+            axios_Hao4K.get('/qiandao', {}).then(function(response) {
+                if (response.status == 200) {
+                    let regex = /您的签到排名/;
+                    let m = regex.exec(iconv.decode(response.data, 'gbk'));
+                    if (m) {
+                        console.log('今日已签到');
+                    } else {
+                        regex = /id="JD_sign" href=\"(.*?)\" onclick=/gm;
+                        m = regex.exec(iconv.decode(response.data, 'gbk'));
+                        // 签到
+                        axios_Hao4K.get(m[1], {}).then(function(response) {
+                            if (response.status == 200) {
+                                // 判断是否已签到
+                                axios_Hao4K.get('/qiandao', {}).then(function(response) {
+                                    if (response.status == 200) {
+                                        let regex = /您的签到排名/;
+                                        let m = regex.exec(iconv.decode(response.data, 'gbk'));
+                                        if (m) {
+                                            console.log('签到成功');
+                                        }
+                                    } else {
+                                        console.log('未知错误');
+                                        console.log(response.data);
+                                    }
+                                }).
+                                catch(function(error) {
+                                    console.log(error);
+                                });
+                            } else {
+                                console.log('未知错误');
+                                console.log(response.data);
+                            }
+                        }).
+                        catch(function(error) {
+                            console.log(error);
+                        });
+                    }
+                } else {
+                    console.log('未知错误');
+                    console.log(response.data);
+                }
+            }).
+            catch(function(error) {
+                console.log(error);
+            });
         }
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+    } else {
+        console.log('未知错误');
+        console.log(response.data);
+    }
+}).
+catch(function(error) {
+    console.log(error);
+});
